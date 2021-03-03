@@ -180,8 +180,8 @@ class RegisterViewController: UIViewController {
               let lastName = lastNameField.text,
               let email = emailField.text,
               let password = passwordField.text,
-              firstName.isEmpty,
-              lastName.isEmpty,
+              !firstName.isEmpty,
+              !lastName.isEmpty,
               !email.isEmpty,
               !password.isEmpty,
               password.count >= 6 else {
