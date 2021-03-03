@@ -219,7 +219,7 @@ extension RegisterViewController: UITextFieldDelegate {
     }
 }
 
-
+ 
 extension RegisterViewController: UIImagePickerControllerDelegate, UINavigationControllerDelegate {
     func presentPhotoActionSheet() {
         let actionSheet = UIAlertController(title: "Profile Picture",
