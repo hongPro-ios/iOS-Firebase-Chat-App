@@ -6,6 +6,7 @@
 //
 
 import UIKit
+import FirebaseAuth
 
 class RegisterViewController: UIViewController {
     
@@ -38,6 +39,7 @@ class RegisterViewController: UIViewController {
         field.leftView = UIView(frame: CGRect(x: 0, y: 0, width: 5, height: 0))
         field.leftViewMode = .always
         field.backgroundColor = .white
+        field.textColor = .black
         return field
     }()
     
@@ -53,6 +55,7 @@ class RegisterViewController: UIViewController {
         field.leftView = UIView(frame: CGRect(x: 0, y: 0, width: 5, height: 0))
         field.leftViewMode = .always
         field.backgroundColor = .white
+        field.textColor = .black
         return field
     }()
     
@@ -68,6 +71,7 @@ class RegisterViewController: UIViewController {
         field.leftView = UIView(frame: CGRect(x: 0, y: 0, width: 5, height: 0))
         field.leftViewMode = .always
         field.backgroundColor = .white
+        field.textColor = .black
         return field
     }()
     
@@ -84,6 +88,7 @@ class RegisterViewController: UIViewController {
         field.leftViewMode = .always
         field.backgroundColor = .white
         field.isSecureTextEntry = true
+        field.textColor = .black
         return field
     }()
     
@@ -180,15 +185,23 @@ class RegisterViewController: UIViewController {
               let lastName = lastNameField.text,
               let email = emailField.text,
               let password = passwordField.text,
-              firstName.isEmpty,
-              lastName.isEmpty,
+              !firstName.isEmpty,
+              !lastName.isEmpty,
               !email.isEmpty,
               !password.isEmpty,
               password.count >= 6 else {
             alertUserLoginError()
             return
         }
+        
+        // Firebase Log In
+        FirebaseAuth.Auth.auth().createUser(withEmail: email, password: password) { (authResult, error) in
+            guard let result = authResult, error == nil else { print("Error creating user"); return}
+            let user = result.user
+            print("Created User: \(user)")
+        }
     }
+    
     
     func alertUserLoginError() {
         let alert = UIAlertController(title: "Woops",
