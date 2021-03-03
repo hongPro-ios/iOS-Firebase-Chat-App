@@ -76,11 +76,19 @@ class LoginViewController: UIViewController {
                                                             target: self,
                                                             action: #selector(didTapRegister))
         
+        // Add subviews
         view.addSubview(scrollView)
         scrollView.addSubview(imageView)
         scrollView.addSubview(emailField)
         scrollView.addSubview(passwordField)
         scrollView.addSubview(loginButton)
+        
+        // Add action
+        loginButton.addTarget(self, action: #selector(loginButtonTapped), for: .touchUpInside)
+        
+        // Add delegate
+        emailField.delegate = self
+        passwordField.delegate = self
     }
     
     override func viewDidLayoutSubviews() {
@@ -107,9 +115,40 @@ class LoginViewController: UIViewController {
         
     }
     
+    @objc private func loginButtonTapped() {
+        guard let email = emailField.text, let password = passwordField.text,
+              !email.isEmpty, !password.isEmpty, password.count >= 6 else {
+            alertUserLoginError()
+            return
+        }
+    }
+    
+    func alertUserLoginError() {
+        let alert = UIAlertController(title: "Woops",
+                                      message: "Please enter all information",
+                                      preferredStyle: .alert)
+        alert.addAction(UIAlertAction(title: "Dismiss",
+                                      style: .cancel,
+                                      handler: nil))
+        present(alert, animated: true)
+    }
+    
     @objc private func didTapRegister() {
         let vc = RegisterViewController()
         navigationController?.pushViewController(vc, animated: true)
     }
     
+}
+
+extension LoginViewController: UITextFieldDelegate {
+    func textFieldShouldReturn(_ textField: UITextField) -> Bool {
+        if textField == emailField {
+            passwordField.becomeFirstResponder()
+        }
+        else if textField == passwordField {
+            loginButtonTapped()
+        }
+        
+        return true
+    }
 }
