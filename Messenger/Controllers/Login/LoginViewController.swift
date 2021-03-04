@@ -183,12 +183,14 @@ class LoginViewController: UIViewController {
                 strongSelf.spinner.dismiss()
             }
             
-            
             guard let result = authResult, error == nil else {
                 print("Failed to log in user with email: \(email)")
                 return
             }
             let user = result.user
+            
+            UserDefaults.standard.set(email, forKey: "email")
+            
             print("Logged In User: ", user)
             strongSelf.navigationController?.dismiss(animated: true, completion: nil)
         }
@@ -224,6 +226,7 @@ extension LoginViewController: UITextFieldDelegate {
     }
 }
 
+// MARK: - Facebook login setting
 extension LoginViewController: LoginButtonDelegate {
     func loginButtonDidLogOut(_ loginButton: FBLoginButton) {
         // no operation
@@ -240,6 +243,7 @@ extension LoginViewController: LoginButtonDelegate {
                                                          tokenString: token,
                                                          version: nil,
                                                          httpMethod: .get)
+        
         facebookRequest.start { _, result, error in
             guard let result = result as? [String: Any], error == nil else {
                 print("Failed to make facebook graph request")
@@ -255,6 +259,8 @@ extension LoginViewController: LoginButtonDelegate {
                 print ("Failed to get email and name from fb result")
                 return
             }
+            
+            UserDefaults.standard.set(email, forKey: "email")
                 
             DatabaseManager.shared.checkUserExists(withEmail: email) { (exists) in
                 if !exists {

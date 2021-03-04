@@ -66,12 +66,14 @@ extension AppDelegate: GIDSignInDelegate {
               let firstName = user.profile.givenName,
               let lastName = user.profile.familyName else { return }
         
+        UserDefaults.standard.set(email, forKey: "email")
+        
         guard let user = user else { return }
         print("did sign in with google: \(user)")
         
         DatabaseManager.shared.checkUserExists(withEmail: email) { exists in
             
-            if !exists{
+            if !exists {
                 // insert to database
                 let chatUser = ChatAppUser(firstName: firstName,
                                            lastName: lastName,
