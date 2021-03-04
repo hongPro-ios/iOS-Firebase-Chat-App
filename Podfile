@@ -10,6 +10,7 @@ target 'Messenger' do
 pod 'Firebase/Core'
 pod 'Firebase/Auth'
 pod 'Firebase/Database'
+pod 'Firebase/Storage'
 
 # Facebook Sign
 pod 'FBSDKLoginKit'
@@ -17,7 +18,7 @@ pod 'FBSDKLoginKit'
 # Google Sign 
 pod 'GoogleSignIn'
 
-# 
+# Etc
 pod 'MessageKit'
 pod 'JGProgressHUD'
 pod 'RealmSwift'
