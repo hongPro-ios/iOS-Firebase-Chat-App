@@ -17,7 +17,7 @@ final class DatabaseManager {
 // MARK: - Account Management
 extension DatabaseManager {
     
-    public func checkUserExists(with email: String, completion: @escaping ((Bool) -> Void)) {
+    public func checkUserExists(withEmail email: String, completion: @escaping ((Bool) -> Void)) {
         var safeEmail = email.replacingOccurrences(of: ".", with: "-")
         safeEmail = safeEmail.replacingOccurrences(of: "@", with: "-")
         
@@ -32,7 +32,7 @@ extension DatabaseManager {
     }
     
     /// Inserts new user to database
-    public func insertUser(with user: ChatAppUser) {
+    public func insertUser(withChatAppUser user: ChatAppUser) {
         database.child(user.safeEmail).setValue([
             "first_name": user.firstName,
             "last_name": user.lastName
