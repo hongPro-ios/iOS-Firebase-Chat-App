@@ -18,11 +18,13 @@ class ProfileViewController: UIViewController {
     
     override func viewDidLoad() {
         super.viewDidLoad()
+        // Add delegate
         tableView.delegate = self
         tableView.dataSource = self
+        
+        // Setup ProfileViewController configure
         tableView.register(UITableViewCell.self, forCellReuseIdentifier: "cell")
         tableView.tableHeaderView = createTableHeader()
-        
     }
     
     func createTableHeader() -> UIView? {
@@ -62,6 +64,7 @@ class ProfileViewController: UIViewController {
         return headerView
     }
     
+    // url로 이미지 다운로드 및 이미지 화면에 표시
     func downloadImage(imageView: UIImageView, url: URL) {
         URLSession.shared.dataTask(with: url, completionHandler: { data, _, error in
             guard let data = data, error == nil else { return }
@@ -73,7 +76,6 @@ class ProfileViewController: UIViewController {
         }).resume()
     }
 }
-
 
 extension ProfileViewController: UITableViewDelegate, UITableViewDataSource {
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
@@ -90,20 +92,20 @@ extension ProfileViewController: UITableViewDelegate, UITableViewDataSource {
     }
     
     func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
+        // 선택된 효과 풀기
         tableView.deselectRow(at: indexPath, animated: true)
-        
-        
+
+        // 로그아웃 alert화면 설정
         let actionSheet = UIAlertController(title: "", message: "", preferredStyle: .actionSheet)
         
+        // alert화면 - Log Out 버튼 기능 설정
         actionSheet.addAction(UIAlertAction(title: "Log Out", style: .destructive, handler: { [weak self] _ in
             guard let strongSelf = self else { return }
             
             // Log Out facebook
             FBSDKLoginKit.LoginManager().logOut()
-            
             // Google Log out
             GIDSignIn.sharedInstance()?.signOut()
-            
             do {
                 //Log Out Firebase
                 try FirebaseAuth.Auth.auth().signOut()
@@ -117,9 +119,10 @@ extension ProfileViewController: UITableViewDelegate, UITableViewDataSource {
                 print("Failed to log out")
             }
         }))
-        
+        // alert화면 - Cancel 버튼 기능 설정
         actionSheet.addAction(UIAlertAction(title: "Cancel", style: .cancel, handler: nil))
         
+        // alert화면 표시
         present(actionSheet, animated: true, completion: nil)
     }
     
