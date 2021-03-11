@@ -9,27 +9,13 @@ import UIKit
 import FirebaseAuth
 import JGProgressHUD
 
-struct Conversation {
-    let id: String
-    let name: String
-    let otherUserEmail: String
-    let latestMessage: LatestMessage
-}
-
-struct LatestMessage {
-    let date: String
-    let text: String
-    let isRead: Bool
-}
 
 class ConversationsViewController: UIViewController {
 
-    
     private let spinner = JGProgressHUD(style: .dark)
     
     private var conversations = [Conversation]()
     
-
     private let tableView: UITableView = { 
         let table = UITableView()
         table.isHidden = true
@@ -121,10 +107,9 @@ class ConversationsViewController: UIViewController {
         present(navVC, animated: true, completion: nil)
     }
     
-    private func createNewConversation(result: [String: String]) {
-        guard let name = result["name"], let email = result["email"] else {
-            return
-        }
+    private func createNewConversation(result: SearchResult) {
+        let name = result.name
+        let email = result.email
         
         let vc = ChatViewController(with: email, id: nil)
         vc.title = name
