@@ -60,6 +60,7 @@ class ChatViewController: MessagesViewController {
         messagesCollectionView.messagesLayoutDelegate = self
         messagesCollectionView.messagesDisplayDelegate = self
         messagesCollectionView.messageCellDelegate = self
+        messageInputBar.delegate = self
         messageInputBar.inputTextView.becomeFirstResponder()
         setupInputButton()
         
@@ -186,6 +187,7 @@ class ChatViewController: MessagesViewController {
                 guard !messages.isEmpty else {
                     return
                 }
+                print("received message : \(messages)")
                 self?.messages = messages
                 
                 DispatchQueue.main.async {
@@ -194,8 +196,6 @@ class ChatViewController: MessagesViewController {
                     if shouldScrollToBottom {
                         self?.messagesCollectionView.scrollToLastItem()
                     }
-                    
-                    
                 }
                 
             case .failure(let error):
