@@ -9,18 +9,6 @@ import Foundation
 import MessageKit
 import CoreLocation
 
-struct Conversation {
-    let id: String
-    let name: String
-    let otherUserEmail: String
-    let latestMessage: LatestMessage
-}
-
-struct LatestMessage {
-    let date: String
-    let text: String
-    let isRead: Bool
-}
 
 struct Message: MessageType {
    public var sender: SenderType
