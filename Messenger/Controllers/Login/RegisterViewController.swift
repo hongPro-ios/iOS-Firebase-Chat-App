@@ -211,6 +211,11 @@ class RegisterViewController: UIViewController {
             // Firebase - Authentication 유저 등록
             FirebaseAuth.Auth.auth().createUser(withEmail: email, password: password) { authResult, error in
                 guard authResult != nil, error == nil else { print("Error creating user"); return}
+                
+                // cache 삭제
+                UserDefaults.standard.setValue(email, forKey: "email")
+                UserDefaults.standard.setValue("\(firstName) \(lastName)", forKey: "name")
+                
                 let chatUser = ChatAppUser(firstName: firstName, lastName: lastName, emailAddress: email)
                 
                 // Firebase - Realtime Database 유저등록
