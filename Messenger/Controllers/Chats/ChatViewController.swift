@@ -18,9 +18,9 @@ class ChatViewController: MessagesViewController {
     
     public static let dateFormatter: DateFormatter = {
         let formatter = DateFormatter()
-        formatter.dateStyle = .medium
-        formatter.timeStyle = .long
-        formatter.locale  = .current
+        formatter.timeStyle = .full
+        formatter.dateStyle = .full
+        formatter.locale = Locale(identifier: "ja_JP")
         return formatter
     }()
     
