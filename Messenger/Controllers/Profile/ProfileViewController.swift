@@ -9,21 +9,75 @@ import UIKit
 import FirebaseAuth
 import FBSDKLoginKit
 import GoogleSignIn
+import SDWebImage
+
+enum ProfileViewModelType {
+    case info, logout
+}
+
+struct ProfileViewModel {
+    let viewModelType: ProfileViewModelType
+    let title: String
+    let handler: (() -> Void)?
+    
+}
 
 class ProfileViewController: UIViewController {
     
     @IBOutlet var tableView: UITableView!
     
-    let data = ["Log Out"]
+    var data = [ProfileViewModel]()
     
     override func viewDidLoad() {
         super.viewDidLoad()
+        
+        data.append(ProfileViewModel(viewModelType: .info,
+                                     title: "Name: \(UserDefaults.standard.value(forKey: "name") as? String ?? "No name")",
+                                     handler: nil))
+        data.append(ProfileViewModel(viewModelType: .info,
+                                     title: "Email: \(UserDefaults.standard.value(forKey: "email") as? String ?? "No Email")",
+                                     handler: nil))
+        data.append(ProfileViewModel(viewModelType: .logout,
+                                     title: "Log Out",
+                                     handler: { [weak self] in
+                                        guard let strongSelf = self else { return }
+                                        // 로그아웃 alert화면 설정
+                                        let actionSheet = UIAlertController(title: "", message: "", preferredStyle: .actionSheet)
+                                        
+                                        // alert화면 - Log Out 버튼 기능 설정
+                                        actionSheet.addAction(UIAlertAction(title: "Log Out", style: .destructive, handler: { [weak self] _ in
+                                            guard let strongSelf = self else { return }
+                                            
+                                            // Log Out facebook
+                                            FBSDKLoginKit.LoginManager().logOut()
+                                            // Google Log out
+                                            GIDSignIn.sharedInstance()?.signOut()
+                                            do {
+                                                //Log Out Firebase
+                                                try FirebaseAuth.Auth.auth().signOut()
+                                                
+                                                let vc = LoginViewController()
+                                                let nav = UINavigationController(rootViewController: vc)
+                                                nav.modalPresentationStyle = .fullScreen
+                                                strongSelf.present(nav, animated: true, completion: nil)
+                                                
+                                            } catch  {
+                                                print("Failed to log out")
+                                            }
+                                        }))
+                                        // alert화면 - Cancel 버튼 기능 설정
+                                        actionSheet.addAction(UIAlertAction(title: "Cancel", style: .cancel, handler: nil))
+                                        
+                                        // alert화면 표시
+                                        strongSelf.present(actionSheet, animated: true, completion: nil)
+                                     }))
+        
         // Add delegate
         tableView.delegate = self
         tableView.dataSource = self
         
         // Setup ProfileViewController configure
-        tableView.register(UITableViewCell.self, forCellReuseIdentifier: "cell")
+        tableView.register(ProfileTableViewCell.self, forCellReuseIdentifier: ProfileTableViewCell.identifier)
         tableView.tableHeaderView = createTableHeader()
     }
     
@@ -52,11 +106,10 @@ class ProfileViewController: UIViewController {
         
         headerView.addSubview(imageView)
         
-        StorageManager.shared.downloadURL(for: path) { [weak self] result in
+        StorageManager.shared.downloadURL(for: path) { result in
             switch result {
             case .success(let url):
-                self?.downloadImage(imageView: imageView , url: url)
-                print()
+                imageView.sd_setImage(with: url, completed: nil)
             case .failure(let error):
                 print("Failed to get download url: \(error)")
             }
@@ -64,17 +117,6 @@ class ProfileViewController: UIViewController {
         return headerView
     }
     
-    // url로 이미지 다운로드 및 이미지 화면에 표시
-    func downloadImage(imageView: UIImageView, url: URL) {
-        URLSession.shared.dataTask(with: url, completionHandler: { data, _, error in
-            guard let data = data, error == nil else { return }
-            
-            DispatchQueue.main.async {
-                let image = UIImage(data : data)
-                imageView.image = image
-            }
-        }).resume()
-    }
 }
 
 extension ProfileViewController: UITableViewDelegate, UITableViewDataSource {
@@ -83,10 +125,11 @@ extension ProfileViewController: UITableViewDelegate, UITableViewDataSource {
     }
     
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
-        let cell = tableView.dequeueReusableCell(withIdentifier: "cell", for: indexPath)
-        cell.textLabel?.text = data[indexPath.row]
-        cell.textLabel?.textAlignment = .center
-        cell.textLabel?.textColor = .red
+        
+        let viewModel = data[indexPath.row]
+        let cell = tableView.dequeueReusableCell(withIdentifier: ProfileTableViewCell.identifier,
+                                                 for: indexPath) as! ProfileTableViewCell
+        cell.setUp(with: viewModel)
         
         return cell
     }
@@ -94,37 +137,35 @@ extension ProfileViewController: UITableViewDelegate, UITableViewDataSource {
     func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
         // 선택된 효과 풀기
         tableView.deselectRow(at: indexPath, animated: true)
-
-        // 로그아웃 alert화면 설정
-        let actionSheet = UIAlertController(title: "", message: "", preferredStyle: .actionSheet)
-        
-        // alert화면 - Log Out 버튼 기능 설정
-        actionSheet.addAction(UIAlertAction(title: "Log Out", style: .destructive, handler: { [weak self] _ in
-            guard let strongSelf = self else { return }
-            
-            // Log Out facebook
-            FBSDKLoginKit.LoginManager().logOut()
-            // Google Log out
-            GIDSignIn.sharedInstance()?.signOut()
-            do {
-                //Log Out Firebase
-                try FirebaseAuth.Auth.auth().signOut()
-                
-                let vc = LoginViewController()
-                let nav = UINavigationController(rootViewController: vc)
-                nav.modalPresentationStyle = .fullScreen
-                strongSelf.present(nav, animated: true, completion: nil)
-                
-            } catch  {
-                print("Failed to log out")
-            }
-        }))
-        // alert화면 - Cancel 버튼 기능 설정
-        actionSheet.addAction(UIAlertAction(title: "Cancel", style: .cancel, handler: nil))
-        
-        // alert화면 표시
-        present(actionSheet, animated: true, completion: nil)
+        data[indexPath.row].handler?()
     }
     
+    
+}
+
+
+class ProfileTableViewCell: UITableViewCell {
+    
+//    static let identifier = "ProfileTableViewCell"
+            static let identifier = String(describing: type(of: self))
+    
+    
+    public func setUp(with viewModel: ProfileViewModel) {
+        
+        
+
+        
+        self.textLabel?.text = viewModel.title
+        
+        switch viewModel.viewModelType {
+        case .info:
+            self.textLabel?.textAlignment = .left
+            self.selectionStyle = .none
+            
+        case .logout:
+            self.textLabel?.textColor = .red
+            self.textLabel?.textAlignment = .center
+        }
+    }
     
 }

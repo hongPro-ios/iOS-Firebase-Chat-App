@@ -7,6 +7,7 @@
 
 import Foundation
 import MessageKit
+import CoreLocation
 
 struct Conversation {
     let id: String
@@ -66,5 +67,10 @@ struct Media: MediaItem {
     var url: URL?
     var image: UIImage?
     var placeholderImage: UIImage
+    var size: CGSize
+}
+
+struct Location: LocationItem {
+    var location: CLLocation
     var size: CGSize
 }

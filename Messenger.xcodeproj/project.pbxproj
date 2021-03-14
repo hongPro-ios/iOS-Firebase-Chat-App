@@ -27,6 +27,7 @@
 		3D7D5A4A25EFDF5700168A91 /* VideoPlayerViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3D7D5A4925EFDF5700168A91 /* VideoPlayerViewController.swift */; };
 		3D7D5A4D25EFDF7100168A91 /* NewConversationViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3D7D5A4C25EFDF7100168A91 /* NewConversationViewController.swift */; };
 		3D7D5A5025EFDF8500168A91 /* ProfileViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3D7D5A4F25EFDF8500168A91 /* ProfileViewController.swift */; };
+		3DB3878125FE7F84008720FE /* LocationPickerViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3DB3878025FE7F84008720FE /* LocationPickerViewController.swift */; };
 		3DE082C325EFE58B00A5FEB6 /* Extension.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3DE082C225EFE58B00A5FEB6 /* Extension.swift */; };
 /* End PBXBuildFile section */
 
@@ -53,6 +54,7 @@
 		3D7D5A4925EFDF5700168A91 /* VideoPlayerViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = VideoPlayerViewController.swift; sourceTree = "<group>"; };
 		3D7D5A4C25EFDF7100168A91 /* NewConversationViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NewConversationViewController.swift; sourceTree = "<group>"; };
 		3D7D5A4F25EFDF8500168A91 /* ProfileViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ProfileViewController.swift; sourceTree = "<group>"; };
+		3DB3878025FE7F84008720FE /* LocationPickerViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LocationPickerViewController.swift; sourceTree = "<group>"; };
 		3DE082C225EFE58B00A5FEB6 /* Extension.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Extension.swift; sourceTree = "<group>"; };
 		D087C42C90F419890A742E49 /* Pods_Messenger.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_Messenger.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		DFA0002BF1A537369CF229B0 /* Pods-Messenger.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-Messenger.release.xcconfig"; path = "Target Support Files/Pods-Messenger/Pods-Messenger.release.xcconfig"; sourceTree = "<group>"; };
@@ -117,6 +119,7 @@
 				3DECE1E925F2987F0024DB39 /* Profile */,
 				3DECE1E825F2986E0024DB39 /* Chats */,
 				3D7D5A5225EFE03E00168A91 /* Login */,
+				3DB3878025FE7F84008720FE /* LocationPickerViewController.swift */,
 			);
 			path = Controllers;
 			sourceTree = "<group>";
@@ -341,6 +344,7 @@
 				3D7D5A4125EFDF1700168A91 /* LoginViewController.swift in Sources */,
 				3D36B7EB25F0265B006DB2BC /* DatabaseManager.swift in Sources */,
 				3D7D5A4725EFDF4B00168A91 /* PhotoViewController.swift in Sources */,
+				3DB3878125FE7F84008720FE /* LocationPickerViewController.swift in Sources */,
 				3D7D5A4D25EFDF7100168A91 /* NewConversationViewController.swift in Sources */,
 				3D7D5A4425EFDF2700168A91 /* RegisterViewController.swift in Sources */,
 				3D7D5A4A25EFDF5700168A91 /* VideoPlayerViewController.swift in Sources */,

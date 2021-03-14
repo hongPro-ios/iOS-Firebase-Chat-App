@@ -41,8 +41,8 @@ class RegisterViewController: UIViewController {
         field.placeholder = "Frist Name..."
         field.leftView = UIView(frame: CGRect(x: 0, y: 0, width: 5, height: 0))
         field.leftViewMode = .always
-        field.backgroundColor = .darkGray
-        field.textColor = .black
+        field.backgroundColor = .secondarySystemBackground
+        
         return field
     }()
     
@@ -57,8 +57,8 @@ class RegisterViewController: UIViewController {
         field.placeholder = "Last Name..."
         field.leftView = UIView(frame: CGRect(x: 0, y: 0, width: 5, height: 0))
         field.leftViewMode = .always
-        field.backgroundColor = .darkGray
-        field.textColor = .black
+        field.backgroundColor = .secondarySystemBackground
+        
         return field
     }()
     
@@ -73,8 +73,8 @@ class RegisterViewController: UIViewController {
         field.placeholder = "Email Address..."
         field.leftView = UIView(frame: CGRect(x: 0, y: 0, width: 5, height: 0))
         field.leftViewMode = .always
-        field.backgroundColor = .darkGray
-        field.textColor = .black
+        field.backgroundColor = .secondarySystemBackground
+        
         return field
     }()
     
@@ -89,9 +89,9 @@ class RegisterViewController: UIViewController {
         field.placeholder = "Password..."
         field.leftView = UIView(frame: CGRect(x: 0, y: 0, width: 5, height: 0))
         field.leftViewMode = .always
-        field.backgroundColor = .darkGray
+        field.backgroundColor = .secondarySystemBackground
         field.isSecureTextEntry = true
-        field.textColor = .black
+        
         return field
     }()
     
@@ -99,7 +99,7 @@ class RegisterViewController: UIViewController {
         let button = UIButton()
         button.setTitle("Register", for: .normal)
         button.backgroundColor = .systemGreen
-        button.setTitleColor(.black, for: .normal)
+        button.setTitleColor(.white, for: .normal)
         button.layer.cornerRadius = 12
         button.layer.masksToBounds = true
         button.titleLabel?.font = .systemFont(ofSize: 20, weight: .bold)
@@ -111,7 +111,7 @@ class RegisterViewController: UIViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
         // Setup loginViewController configure
-        view.backgroundColor = .white
+        view.backgroundColor = .systemBackground
         title = String(describing: type(of: self))
         
         // Add delegate
